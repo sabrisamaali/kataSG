@@ -14,19 +14,36 @@ public class Account {
         this.history = history;
     }
 
+    /**
+     * add an amount to the account and update the list of operations
+     *
+     * @param amountToBeAdded amount to be added
+     */
     public void saveMoney(double amountToBeAdded) {
         updateHistory(amountToBeAdded, "add");
         amount = amount + amountToBeAdded;
     }
 
+    /**
+     * withdraw  an amount to the account and update the list of operations
+     *
+     * @param amountToBeRetreved amount withdrawn
+     */
     public void retrieveMoney(double amountToBeRetreved) {
         updateHistory(amountToBeRetreved, "Retrieve");
         amount = amount - amountToBeRetreved;
     }
 
+    /**
+     * trace the operation
+     * @param amount the new amount
+     * @param operationType in this case ze only have 2 operation add or retrieve
+     */
     public void updateHistory(double amount, String operationType) {
-        OperationHistory currentOperation = new OperationHistory(LocalDateTime.now(), amount, amount,
-                amount + amount, operationType);
+        double result = "add".equals(operationType) ? OperationType.ADD.calculateResult(this.amount, amount) :
+                OperationType.RETRIEVE.calculateResult(this.amount, amount);
+        OperationHistory currentOperation = new OperationHistory(LocalDateTime.now(), this.amount, amount,
+                result, operationType);
         history.add(currentOperation);
     }
 
